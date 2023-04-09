@@ -1,0 +1,11 @@
+To use PostGreSQL 15 on an application, its necessary to first
+start it.
+
+On Windows Powershell, type:
+cd 'C:\Program Files\PostgreSQL\15\bin'
+
+To start the server, enter:
+  .\pg_ctl start -D 'C:\Program Files\PostgreSQL\15\data'
+
+To stop:
+  .\pg_ctl stop -D 'C:\Program Files\PostgreSQL\15\data'
