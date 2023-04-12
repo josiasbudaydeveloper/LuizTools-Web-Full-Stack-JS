@@ -14,7 +14,7 @@ const accountCreationSchema = Joi.object({
   password: Joi.string()
     .alphanum()
     .min(8)
-    .max(150)
+    .max(255)
     .required(),
   status: Joi.number()
     .integer()

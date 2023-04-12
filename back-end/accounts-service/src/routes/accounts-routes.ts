@@ -13,7 +13,7 @@ router.get('/', accountsController.getAccounts);
 
 router.get('/:id', validateId, accountsController.getAccount);
 
-router.post('/', validateAddAccount, accountsController.addtAccount);
+router.post('/', validateAddAccount, accountsController.addAccount);
 
 router.patch('/:id', validateId, validateUpdateAccount, accountsController.updateAccount);
 

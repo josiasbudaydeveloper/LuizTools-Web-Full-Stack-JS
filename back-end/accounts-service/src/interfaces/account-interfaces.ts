@@ -1,9 +1,4 @@
-enum AccountStatus {
-  CREATED = 100,
-  ACTIVE = 200,
-  SUSPENDED = 300,
-  REMOVED = 400
-}
+import { AccountStatus } from "./account-status"
 
 export interface IAccount {
   id: number,

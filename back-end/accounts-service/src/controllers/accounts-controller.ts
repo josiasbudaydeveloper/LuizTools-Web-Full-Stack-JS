@@ -1,21 +1,26 @@
 import { Request, Response, NextFunction } from "express";
 import { IAccount } from "../interfaces/account-interfaces";
-import { parse } from "path";
+import accountsRepository from "../models/accounts-repository";
 
-const accounts: IAccount[] = [];
+const accounts : IAccount[] = [];
 
-function getAccounts(req: Request, res: Response, next: NextFunction) {
-  return res.json(accounts);
+async function getAccounts(req: Request, res: Response, next: NextFunction) {
+  const accounts = await accountsRepository.findAll();
+
+  return res.json(accounts.map((item) => {
+    item.password = "";
+    return item;
+  }));
 }
 
-function getAccount(req: Request, res: Response, next: NextFunction) {
+async function getAccount(req: Request, res: Response, next: NextFunction) {
   try {
 		const id = parseInt(req.params.id);
+		const account = await accountsRepository.findByPk(id);
+		if (account == null) return res.sendStatus(404) // return the NOT FOUND status
 
-		const index = accounts.findIndex((account) => account.id == id);
-		if (index == -1) return res.sendStatus(404) // return the NOT FOUND status
-
-		return res.json(accounts[index]);
+    account.password = "";
+		return res.json(account);
 	} 
 	catch (error) {
     console.log(error);
@@ -23,10 +28,12 @@ function getAccount(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-function addtAccount(req: Request, res: Response, next: NextFunction) {
+async function addAccount(req: Request, res: Response, next: NextFunction) {
   try {
     const newAccount = req.body as IAccount;
-    accounts.push(newAccount);
+    const result = await accountsRepository.addAccount(newAccount);
+    newAccount.id = result.id;
+    newAccount.password = "";
 
   	return res.status(201).json(newAccount);
   }
@@ -36,21 +43,16 @@ function addtAccount(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-function updateAccount(req: Request, res: Response, next: NextFunction) {
+async function updateAccount(req: Request, res: Response, next: NextFunction) {
   try {
-    const accountId = parseInt(req.params.id);
+    const id = parseInt(req.params.id);
     const accountParams = req.body as IAccount;
-    const index = accounts.findIndex(item => item.id == accountId);
-    if (index == -1) return res.sendStatus(404);
+    const account = await accountsRepository.updateAccount(id, accountParams);
+    if (account) {
+      return res.json(account);
+    }
 
-    const originalAccount = accounts[index];
-
-    if (accountParams.name) originalAccount.name = accountParams.name;
-    if (accountParams.password) originalAccount.password = accountParams.password;
-    if (accountParams.domain) originalAccount.domain = accountParams.domain;
-
-    accounts[index] = originalAccount;
-    return res.json(accounts[index]);
+    return res.sendStatus(404);
   }
   catch(error) {
     console.log(error);
@@ -89,7 +91,7 @@ function logoutAccount(req: Request, res: Response, next: NextFunction) {
 export default {
   getAccounts,
   getAccount,
-	addtAccount,
+	addAccount,
   updateAccount,
   loginAccount,
   logoutAccount
