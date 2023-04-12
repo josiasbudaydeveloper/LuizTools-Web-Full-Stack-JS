@@ -91,7 +91,7 @@ function logoutAccount(req: Request, res: Response, next: NextFunction) {
 export default {
   getAccounts,
   getAccount,
-	addAccount,
+  addAccount,
   updateAccount,
   loginAccount,
   logoutAccount

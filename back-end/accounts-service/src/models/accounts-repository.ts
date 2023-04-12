@@ -20,7 +20,7 @@ async function updateAccount(id: number, account: IAccount) {
 
   if (originalAccount != null) {
     if (account.name) originalAccount.name = account.name;
-    if (account.password) originalAccount.password = account.password;
+    if (account.password) originalAccount.password = auth.hashPassword(account.password);
     if (account.domain) originalAccount.domain = account.domain;
 
     await originalAccount.save();
