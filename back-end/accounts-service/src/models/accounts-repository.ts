@@ -33,9 +33,19 @@ async function updateAccount(id: number, account: IAccount) {
   return null;
 }
 
+function findByEmail(email: string) {
+  return accountModel.findOne({ where: { email } });
+}
+
+function deleteByEmail(email: string) {
+  return accountModel.destroy({ where: { email } });
+}
+
 export default {
   findAll,
   findByPk,
   addAccount,
-  updateAccount
+  updateAccount,
+  findByEmail,
+  deleteByEmail
 }

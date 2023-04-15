@@ -1,23 +1,24 @@
 import { Router } from 'express';
 import accountsController from '../controllers/accounts-controller';
 import { 
-  validateId, 
-  validateAddAccount, 
-  validateUpdateAccount, 
-  validateAccountLogin 
+  validateIdFormat, 
+  validateAddAccountSchema, 
+  validateUpdateAccountSchema, 
+  validateAccountLoginSchema,
+  validateAuthToken
 } from '../middlewares/accounts-middlewares';
 
 const router = Router();
 
-router.get('/', accountsController.getAccounts);
+router.get('/', validateAuthToken, accountsController.getAccounts);
 
-router.get('/:id', validateId, accountsController.getAccount);
+router.get('/:id', validateAuthToken, validateIdFormat, accountsController.getAccount);
 
-router.post('/', validateAddAccount, accountsController.addAccount);
+router.post('/', validateAddAccountSchema, accountsController.addAccount);
 
-router.patch('/:id', validateId, validateUpdateAccount, accountsController.updateAccount);
+router.patch('/:id', validateAuthToken, validateIdFormat, validateUpdateAccountSchema, accountsController.updateAccount);
 
-router.post('/login', validateAccountLogin, accountsController.loginAccount);
+router.post('/login', validateAccountLoginSchema, accountsController.loginAccount);
 
 router.post('/logout', accountsController.logoutAccount);
 

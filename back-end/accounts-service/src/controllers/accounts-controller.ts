@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { IAccount } from "../interfaces/account-interfaces";
 import accountsRepository from "../models/accounts-repository";
-
-const accounts : IAccount[] = [];
+import auth from "../auth";
 
 async function getAccounts(req: Request, res: Response, next: NextFunction) {
   const accounts = await accountsRepository.findAll();
@@ -60,16 +59,21 @@ async function updateAccount(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-function loginAccount(req: Request, res: Response, next: NextFunction) {
+async function loginAccount(req: Request, res: Response, next: NextFunction) {
   try {
     const loginParams = req.body as IAccount;
-    const index = accounts.findIndex(item => item.email == loginParams.email);
-    if (index == -1) return res.sendStatus(404);
+    const account = await accountsRepository.findByEmail(loginParams.email);
+    if (account == null) return res.sendStatus(404);
 
-    if (loginParams.password == accounts[index].password) return res.json({
-      auth: true,
-      token: {}
-    })
+    const isValid =  auth.comparePassword(loginParams.password, account.password);
+    if (isValid) {
+      const token = await auth.signToken(account.id);
+
+      return res.json({
+        auth: true,
+        token
+      });
+    }
     else {
       return res.sendStatus(401);
     }
@@ -85,7 +89,7 @@ function logoutAccount(req: Request, res: Response, next: NextFunction) {
   return res.json({
     auth: false,
     token: null
-  })
+  });
 }
 
 export default {

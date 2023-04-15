@@ -1,20 +1,22 @@
 import server, { Response } from 'supertest';
 import app from '../src/app';
 import { describe, expect, test, beforeAll, afterAll } from '@jest/globals';
+import accountsRepository from '../src/models/accounts-repository';
+import database from "../src/db"; 
 
 beforeAll(async () => {
   const payload = {
-    "id": 1,
     "name": "Test",
     "email": "test@test.com",
-    "password": "12345678",
-    "status": 100,
-    "domain": "test.com"
-  }
+    "password": "12345678"
+  };
 
-const response: Response = await server(app)
-  .post('/accounts')
-  .send(payload)
+  await accountsRepository.addAccount(payload);
+});
+
+afterAll(async () => {
+  await accountsRepository.deleteByEmail("test@test.com");
+  await database.close();
 });
 
 describe('Auth: /accounts/login', () => {
@@ -22,7 +24,7 @@ describe('Auth: /accounts/login', () => {
     const payload = {
       email: "test@test.com",
       password: "12345678"
-    }
+    };
 
     const response: Response = await server(app)
       .post('/accounts/login')
@@ -79,5 +81,7 @@ describe('Auth: /accounts/logout', () => {
       .post('/accounts/logout');
 
     expect(response.status).toEqual(200);
-  })
+    expect(response.body.auth).toBeFalsy();
+    expect(response.body.token).toBeFalsy();
+  });
 });

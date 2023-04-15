@@ -1,9 +1,6 @@
 import Joi from 'joi';
 
 const accountCreationSchema = Joi.object({
-  id: Joi.number()
-    .integer()
-    .min(1),
   name: Joi.string()
     .min(3)
     .max(255)

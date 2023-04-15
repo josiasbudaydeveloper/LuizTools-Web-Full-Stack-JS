@@ -1,10 +1,10 @@
 import { AccountStatus } from "./account-status"
 
 export interface IAccount {
-  id: number,
+  id?: number,
   name: string,
   email: string,
   password: string,
-  status: AccountStatus,
-  domain: string
+  status?: AccountStatus,
+  domain?: string
 }

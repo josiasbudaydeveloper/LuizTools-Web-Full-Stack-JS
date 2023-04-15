@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { accountCreationSchema, accountUpdateSchema, accountLoginSchema } from "../schemas/accounts-schemas";
 import Joi from "joi";
+import auth from "../auth";
 
-function validateId(req: Request, res: Response, next: NextFunction) {
+function validateIdFormat(req: Request, res: Response, next: NextFunction) {
   try {
     const id = parseInt(req.params.id);
 	  if (!id) throw new Error('id is in invalid format');
@@ -26,21 +27,39 @@ function validateSchema(schema: Joi.ObjectSchema<any>, req: Request, res: Respon
   res.sendStatus(422);
 }
 
-function validateAddAccount(req: Request, res: Response, next: NextFunction) {
+function validateAddAccountSchema(req: Request, res: Response, next: NextFunction) {
   return validateSchema(accountCreationSchema, req, res, next);
 }
 
-function validateUpdateAccount(req: Request, res: Response, next: NextFunction) {
+function validateUpdateAccountSchema(req: Request, res: Response, next: NextFunction) {
   return validateSchema(accountUpdateSchema, req, res, next);
 }
 
-function validateAccountLogin(req: Request, res: Response, next: NextFunction) {
+function validateAccountLoginSchema(req: Request, res: Response, next: NextFunction) {
   return validateSchema(accountLoginSchema, req, res, next);
 }
 
+async function validateAuthToken(req: Request, res: Response, next: NextFunction) {
+  try {
+    const token = req.headers['authorization'] as string;
+    if (!token) return res.sendStatus(401);
+
+    const payload = await auth.verifyToken(token);
+    if (!payload) return res.sendStatus(401);
+
+    res.locals.payload = payload;
+    return next();
+  }
+  catch(error) {
+    console.log(error);
+    res.sendStatus(401);
+  }
+}
+
 export {
-  validateId,
-  validateAddAccount,
-  validateUpdateAccount,
-  validateAccountLogin
+  validateIdFormat,
+  validateAddAccountSchema,
+  validateUpdateAccountSchema,
+  validateAccountLoginSchema,
+  validateAuthToken
 }

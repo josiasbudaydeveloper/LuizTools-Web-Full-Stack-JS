@@ -1,24 +1,34 @@
 import server, { Response } from 'supertest';
 import app from '../src/app';
-import { describe, expect, test, beforeAll, afterAll } from '@jest/globals';
+import { describe, expect, test, afterAll, jest } from '@jest/globals';
+import accountsRepository from '../src/models/accounts-repository';
+import database from "../src/db"; 
+
+jest.mock('../node_modules/jsonwebtoken', () => {
+  return {
+      verify: () => true
+  }
+})
+
+afterAll(async () => {
+  await accountsRepository.deleteByEmail("test@test.com");
+  await database.close();
+})
 
 describe('Routes: POST /accounts', () => {
   test('POST /accounts - 201 CREATED', async () => {
     const payload = {
-        "id": 1,
-        "name": "Test",
-        "email": "test@test.com",
-        "password": "12345678",
-        "status": 100,
-        "domain": "test.com"
-      }
+      "name": "Test",
+      "email": "test@test.com",
+      "password": "12345678"
+    };
     
     const response: Response = await server(app)
       .post('/accounts')
       .send(payload)
 
     expect(response.status).toEqual(201);
-    expect(response.body.id).toEqual(1);
+    expect(response.body.id).toBeTruthy();
   });
 
   test('POST /accounts - 422 UNPROCESSABLE ENTITY', async () => {
@@ -42,7 +52,8 @@ describe('Routes: PATCH /accounts', () => {
     
     const response: Response = await server(app)
       .patch('/accounts/1')
-      .send(payload)
+      .set("authorization", ".")
+      .send(payload);
 
     expect(response.status).toEqual(200);
     expect(response.body.id).toEqual(1);
@@ -51,6 +62,7 @@ describe('Routes: PATCH /accounts', () => {
   test('PATCH /accounts/:id - 400 BAD REQUEST', async () => {
     const response: Response = await server(app)
       .patch('/accounts/abc')
+      .set("authorization", ".")
       .send()
 
     expect(response.status).toEqual(400);
@@ -59,6 +71,7 @@ describe('Routes: PATCH /accounts', () => {
   test('PATCH /accounts/:id - 404 NOT FOUND', async () => {    
     const response: Response = await server(app)
       .patch('/accounts/-1')
+      .set("authorization", ".")
       .send()
 
     expect(response.status).toEqual(404);
@@ -68,7 +81,8 @@ describe('Routes: PATCH /accounts', () => {
 describe('Routes GET /accounts', () => {
   test('GET /accounts - 200 OK', async () => {
     const response: Response = await server(app)
-      .get('/accounts');
+      .get('/accounts')
+      .set("authorization", ".");
 
     expect(response.status).toEqual(200);
     expect(Array.isArray(response.body)).toBeTruthy();
@@ -76,7 +90,8 @@ describe('Routes GET /accounts', () => {
 
   test('GET /account/:id - 200 OK', async () => {
     const response: Response = await server(app)
-      .get('/accounts/1');
+      .get('/accounts/1')
+      .set("authorization", ".");
 
     expect(response.status).toEqual(200);
     expect(response.body.id).toEqual(1);
@@ -84,14 +99,16 @@ describe('Routes GET /accounts', () => {
 
   test('GET /account/:id - 404 NOT FOUND', async () => {
     const response: Response = await server(app)
-      .get('/accounts/2');
+      .get('/accounts/2')
+      .set("authorization", ".");
 
     expect(response.status).toEqual(404);
   });
 
   test('GET /account/:id - 400 BAD REQUEST', async () => {
     const response: Response = await server(app)
-      .get('/accounts/abc');
+      .get('/accounts/abc')
+      .set("authorization", ".");
 
     expect(response.status).toEqual(400);
   });
