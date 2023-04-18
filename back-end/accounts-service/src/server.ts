@@ -1,5 +1,5 @@
-import app from "./app";
-import database from "./db";
+import app from './app';
+import database from "ms-commons/data/db";
 
 (async () => {
   try {
