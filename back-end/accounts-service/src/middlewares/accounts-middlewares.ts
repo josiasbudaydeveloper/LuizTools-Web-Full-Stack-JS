@@ -1,12 +1,23 @@
 import { Request, Response, NextFunction } from "express";
 import { accountCreationSchema, accountUpdateSchema, accountLoginSchema } from "../schemas/accounts-schemas";
 import Joi from "joi";
-import auth from "../auth";
+import commonsMiddlewares from 'ms-commons/api/middlewares/commons-middlewares';
+import commonsControllers from 'ms-commons/api/controllers/commons-controllers';
+import { Token } from "ms-commons/api/auth";
 
 function validateIdFormat(req: Request, res: Response, next: NextFunction) {
+  return commonsMiddlewares.validateIdFormat(req, res, next);
+}
+
+function validateAuthentication(req: Request, res: Response, next: NextFunction) {
+  return commonsMiddlewares.validateAuthentication(req, res, next);
+}
+
+function validateAuthorization(req: Request, res: Response, next: NextFunction) {
   try {
     const id = parseInt(req.params.id);
-	  if (!id) throw new Error('id is in invalid format');
+    const token = commonsControllers.getToken(res) as Token;
+    if (id !== token.accountId) return res.sendStatus(403);
 
     next();
   }
@@ -17,14 +28,7 @@ function validateIdFormat(req: Request, res: Response, next: NextFunction) {
 }
 
 function validateSchema(schema: Joi.ObjectSchema<any>, req: Request, res: Response, next: NextFunction) {
-  const { error } = schema.validate(req.body);
-  if (error == null) return next();
-
-  const { details } = error;
-  const message = details.map(item => item.message).join(',');
-
-  console.log(message);
-  res.sendStatus(422);
+  return commonsMiddlewares.validateSchema(schema, req, res, next);
 }
 
 function validateAddAccountSchema(req: Request, res: Response, next: NextFunction) {
@@ -39,27 +43,11 @@ function validateAccountLoginSchema(req: Request, res: Response, next: NextFunct
   return validateSchema(accountLoginSchema, req, res, next);
 }
 
-async function validateAuthToken(req: Request, res: Response, next: NextFunction) {
-  try {
-    const token = req.headers['authorization'] as string;
-    if (!token) return res.sendStatus(401);
-
-    const payload = await auth.verifyToken(token);
-    if (!payload) return res.sendStatus(401);
-
-    res.locals.payload = payload;
-    return next();
-  }
-  catch(error) {
-    console.log(error);
-    res.sendStatus(401);
-  }
-}
-
-export {
+export default {
   validateIdFormat,
+  validateAuthentication,
+  validateAuthorization,
   validateAddAccountSchema,
   validateUpdateAccountSchema,
-  validateAccountLoginSchema,
-  validateAuthToken
+  validateAccountLoginSchema
 }

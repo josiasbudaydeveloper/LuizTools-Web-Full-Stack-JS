@@ -1,25 +1,41 @@
 import { Router } from 'express';
-import accountsController from '../controllers/accounts-controller';
-import { 
-  validateIdFormat, 
-  validateAddAccountSchema, 
-  validateUpdateAccountSchema, 
-  validateAccountLoginSchema,
-  validateAuthToken
-} from '../middlewares/accounts-middlewares';
+import accountsController from '../controllers/accounts-controllers';
+import accountsMiddlewares from '../middlewares/accounts-middlewares';
 
 const router = Router();
 
-router.get('/', validateAuthToken, accountsController.getAccounts);
+router.get('/', 
+  accountsMiddlewares.validateAuthentication, 
+  accountsController.getAccounts
+);
 
-router.get('/:id', validateAuthToken, validateIdFormat, accountsController.getAccount);
+router.get('/:id', 
+  accountsMiddlewares.validateAuthentication, 
+  accountsMiddlewares.validateIdFormat, 
+  accountsMiddlewares.validateAuthorization,
+  accountsController.getAccount
+);
 
-router.post('/', validateAddAccountSchema, accountsController.addAccount);
+router.post('/', 
+  accountsMiddlewares.validateAddAccountSchema, 
+  accountsController.addAccount
+);
 
-router.post('/login', validateAccountLoginSchema, accountsController.loginAccount);
+router.post('/login', 
+  accountsMiddlewares.validateAccountLoginSchema, 
+  accountsController.loginAccount
+);
 
-router.post('/logout', accountsController.logoutAccount);
+router.post('/logout', 
+  accountsController.logoutAccount
+);
 
-router.patch('/:id', validateAuthToken, validateIdFormat, validateUpdateAccountSchema, accountsController.updateAccount);
+router.patch('/:id', 
+  accountsMiddlewares.validateAuthentication, 
+  accountsMiddlewares.validateIdFormat, 
+  accountsMiddlewares.validateAuthorization,
+  accountsMiddlewares.validateUpdateAccountSchema, 
+  accountsController.updateAccount
+);
 
 export default router;

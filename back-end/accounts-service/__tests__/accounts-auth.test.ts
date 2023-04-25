@@ -2,7 +2,7 @@ import server, { Response } from 'supertest';
 import app from '../src/app';
 import { describe, expect, test, beforeAll, afterAll } from '@jest/globals';
 import accountsRepository from '../src/models/accounts-repository';
-import database from "../src/db"; 
+import database from "../../__commons__/src/data/db"; 
 
 beforeAll(async () => {
   const payload = {

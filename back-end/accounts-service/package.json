@@ -19,7 +19,8 @@
     "jsonwebtoken": "^9.0.0",
     "sequelize": "^6.31.0",
     "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "tsconfig-paths-jest-mapper": "^1.4.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

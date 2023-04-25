@@ -1,11 +1,11 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import fs from "fs";
+import path from "path";
 
 // From root to keys/
-const privateKey = fs.readFileSync('./keys/private.key');
-const publicKey = fs.readFileSync('./keys/public.key');
-const JWT_EXPIRES = parseInt(process.env.JWT_EXPIRES!);
+const privateKey = fs.readFileSync(path.resolve(__dirname, 'keys/private.key'), 'utf-8');
+const JWT_EXPIRES = parseInt(process.env.JWT_EXPIRES!) || 300;
 const algorithm = "RS256";
 
 function hashPassword(password: string) {
@@ -29,23 +29,8 @@ function signToken(accountId: number) {
   });
 }
 
-async function verifyToken(token : string) {
-  try {
-    const decoded = await jwt.verify(token, publicKey, {
-      algorithms: ["RS256"]
-    }) as Token;
-
-    return { accountId: decoded.accountId }
-  }
-  catch(error) {
-    console.log(error);
-    return null;
-  }
-}
-
 export default {
   hashPassword,
   comparePassword,
-  signToken,
-  verifyToken
+  signToken
 }
