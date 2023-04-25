@@ -19,10 +19,10 @@ function validateIdFormat(req: Request, res: Response, next: NextFunction) {
 async function validateAuthentication(req: Request, res: Response, next: NextFunction) {
   try {
     const token = req.headers['authorization'] as string;
-    if (!token) return res.sendStatus(333);
+    if (!token) return res.sendStatus(401);
 
     const payload = await auth.verifyToken(token);
-    if (!payload) return res.sendStatus(444);
+    if (!payload) return res.sendStatus(401);
 
     res.locals.payload = payload;
     
@@ -30,7 +30,7 @@ async function validateAuthentication(req: Request, res: Response, next: NextFun
   }
   catch(error) {
     console.log(error);
-    res.sendStatus(555);
+    res.sendStatus(401);
   }
 }
 
