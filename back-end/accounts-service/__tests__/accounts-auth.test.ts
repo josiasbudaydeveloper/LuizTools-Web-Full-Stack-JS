@@ -11,7 +11,7 @@ beforeAll(async () => {
     "password": "12345678"
   };
 
-  await accountsRepository.addAccount(payload);
+  await accountsRepository.add(payload);
 });
 
 afterAll(async () => {

@@ -38,7 +38,7 @@ afterAll(async () => {
   await database.close();
 })
 
-describe('Routes: POST /accounts', () => {
+describe('POST /accounts', () => {
   test('POST /accounts - 201 CREATED', async () => {
     const payload = {
       "name": "Test Account 2",
@@ -67,7 +67,7 @@ describe('Routes: POST /accounts', () => {
   });
 });
 
-describe('Routes: PATCH /accounts', () => {
+describe('PATCH /accounts', () => {
   test('PATCH /accounts/:id - 200 OK', async () => {
     const payload = {
         "password": "87654321"
@@ -101,7 +101,7 @@ describe('Routes: PATCH /accounts', () => {
   });
 });
 
-describe('Routes GET /accounts', () => {
+describe('GET /accounts', () => {
   test('GET /accounts - 200 OK', async () => {
     const response: Response = await server(app)
       .get('/accounts')

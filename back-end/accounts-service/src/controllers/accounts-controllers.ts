@@ -30,7 +30,7 @@ async function getAccount(req: Request, res: Response, next: NextFunction) {
 async function addAccount(req: Request, res: Response, next: NextFunction) {
   try {
     const newAccount = req.body as IAccount;
-    const result = await accountsRepository.addAccount(newAccount);
+    const result = await accountsRepository.add(newAccount);
     newAccount.id = result.id;
     newAccount.password = "";
 
@@ -46,7 +46,7 @@ async function updateAccount(req: Request, res: Response, next: NextFunction) {
   try {
     const id = parseInt(req.params.id);
     const accountParams = req.body as IAccount;
-    const account = await accountsRepository.updateAccount(id, accountParams);
+    const account = await accountsRepository.update(id, accountParams);
     if (account) {
       return res.json(account);
     }

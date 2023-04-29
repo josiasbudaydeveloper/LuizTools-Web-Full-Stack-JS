@@ -30,6 +30,10 @@ const accountUpdateSchema = Joi.object({
     .alphanum()
     .min(8)
     .max(150),
+  status: Joi.number()
+    .integer()
+    .min(100)
+    .max(400),
   domain: Joi.string()
     .min(7)
     .max(255)

@@ -28,8 +28,7 @@ export default Contact.init({
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
+    allowNull: false
   },
   phone: {
     type: DataTypes.STRING(15),
@@ -42,5 +41,9 @@ export default Contact.init({
   }
 }, {
   sequelize: database,
-  modelName: 'contact'
+  modelName: 'contact',
+  indexes: [{
+    unique: true,
+    fields: ['accountId', 'email']
+  }]
 });

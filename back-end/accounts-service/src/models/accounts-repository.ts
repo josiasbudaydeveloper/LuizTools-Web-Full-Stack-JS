@@ -10,12 +10,12 @@ async function findByPk(id: number) {
   return accountModel.findByPk(id);
 }
 
-async function addAccount(account: IAccount) {
+async function add(account: IAccount) {
   account.password = auth.hashPassword(account.password);
   return accountModel.create(account);
 }
 
-async function updateAccount(id: number, account: IAccount) {
+async function update(id: number, account: IAccount) {
   const originalAccount = await accountModel.findByPk(id);
 
   if (originalAccount != null) {
@@ -44,8 +44,8 @@ function deleteByEmail(email: string) {
 export default {
   findAll,
   findByPk,
-  addAccount,
-  updateAccount,
+  add,
+  update,
   findByEmail,
   deleteByEmail
 }
