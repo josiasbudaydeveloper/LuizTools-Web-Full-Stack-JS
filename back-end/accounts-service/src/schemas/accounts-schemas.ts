@@ -29,7 +29,7 @@ const accountUpdateSchema = Joi.object({
   password: Joi.string()
     .alphanum()
     .min(8)
-    .max(150),
+    .max(255),
   status: Joi.number()
     .integer()
     .min(100)
@@ -45,8 +45,7 @@ const accountLoginSchema = Joi.object({
     .required(),
   password: Joi.string()
     .alphanum()
-    .min(8)
-    .max(150)
+    .max(255)
     .required()  
 });
 
