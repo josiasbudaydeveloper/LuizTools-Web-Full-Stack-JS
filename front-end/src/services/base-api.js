@@ -3,7 +3,7 @@ import { getToken } from './auth';
 
 //
 /**
- Preconfiguring the requests:
+ Configuring the baseAPI:
  - Sets the baseURL
  - Sets the acess token to the authorization header of the requests
  * @param { String } baseURL - The base URL of the respective API
