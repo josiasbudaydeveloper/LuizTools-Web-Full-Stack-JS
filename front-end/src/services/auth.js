@@ -5,7 +5,7 @@ const isAuthenticated = () => localStorage.getItem(TOKEN_KEY) !== null;
 const getToken = () => localStorage.getItem(TOKEN_KEY);
 
 /**
- * Stores the token in localStorage
+ * Stores the token into localStorage
  * @param {string} token 
  */
 function login(token) {
