@@ -8,7 +8,6 @@ const accountCreationSchema = Joi.object({
   email: Joi.string()
     .required(),
   password: Joi.string()
-    .alphanum()
     .min(8)
     .max(255)
     .required(),
@@ -27,7 +26,6 @@ const accountUpdateSchema = Joi.object({
     .min(3)
     .max(255),
   password: Joi.string()
-    .alphanum()
     .min(8)
     .max(255),
   status: Joi.number()
@@ -43,7 +41,6 @@ const accountLoginSchema = Joi.object({
   email: Joi.string()
     .required(),
   password: Joi.string()
-    .alphanum()
     .max(255)
     .required()  
 });
