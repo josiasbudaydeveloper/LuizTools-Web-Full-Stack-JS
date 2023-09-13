@@ -101,7 +101,7 @@ export default function Login() {
           
           <BoxContent>
             <p>New to MailShrimp?</p>   
-            <Link to="/signup" className='btn btn-primary'>Creat new account</Link>
+            <Link to="/signup" className='btn btn-primary'>Create new account</Link>
           </BoxContent>
         </Col>
       </Row>
