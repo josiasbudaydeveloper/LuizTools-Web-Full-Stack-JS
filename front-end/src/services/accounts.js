@@ -6,6 +6,10 @@ export default class AccountService {
     this.api = baseAPI(baseURLs.API_ACCOUNTS);
   }
 
+  async checkTokenValidation() {
+    await this.api.get('/accounts/checktokenvalidation');
+  }
+
   async singup(userModel) {
     const result = await this.api.post('/accounts', userModel);
 

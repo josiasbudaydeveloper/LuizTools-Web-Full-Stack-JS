@@ -1,8 +1,9 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { Container, Navbar, Nav, Button } from 'react-bootstrap';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { Header } from './styles';
 import { logout } from '../../services/auth';
+import AccountService from '../../services/accounts';
 
 import Icon from '../../assets/icone.png';
 
@@ -14,6 +15,23 @@ export default function MainMenu() {
     logout();
     navigate("/login");
   }
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const service = new AccountService();
+      try {
+        await service.checkTokenValidation();
+      }
+      catch(error) {
+        console.log(error);
+        handleLogout();
+      } 
+    }, 1800000);
+  
+    return () => {
+      clearInterval(interval); // Clean up the interval on unmount
+    };
+  }, []);
 
   return (
     <header>
