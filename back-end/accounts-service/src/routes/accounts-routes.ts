@@ -4,6 +4,11 @@ import accountsMiddlewares from '../middlewares/accounts-middlewares';
 
 const router = Router();
 
+router.get('/checktokenvalidation',
+  accountsMiddlewares.validateAuthentication,
+  accountsController.checkTokenValidation
+);
+
 router.get('/', 
   accountsMiddlewares.validateAuthentication, 
   accountsController.getAccounts

@@ -3,6 +3,10 @@ import { IAccount } from "../interfaces/account-interfaces";
 import accountsRepository from "../models/accounts-repository";
 import auth from "../auth";
 
+function checkTokenValidation(req: Request, res: Response, next: NextFunction) : void {
+  res.sendStatus(200);
+}
+
 async function getAccounts(req: Request, res: Response, next: NextFunction) {
   const accounts = await accountsRepository.findAll();
 
@@ -93,6 +97,7 @@ function logoutAccount(req: Request, res: Response, next: NextFunction) {
 }
 
 export default {
+  checkTokenValidation,
   getAccounts,
   getAccount,
   addAccount,
