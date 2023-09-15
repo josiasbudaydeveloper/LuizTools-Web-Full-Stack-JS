@@ -26,7 +26,7 @@ export default function MainMenu() {
         console.log(error);
         handleLogout();
       } 
-    }, 1800000);
+    }, 1800);
   
     return () => {
       clearInterval(interval); // Clean up the interval on unmount

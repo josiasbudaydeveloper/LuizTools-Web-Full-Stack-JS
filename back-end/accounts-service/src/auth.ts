@@ -5,7 +5,7 @@ import path from "path";
 
 // From root to keys/
 const privateKey = fs.readFileSync(path.resolve(__dirname, 'keys/private.key'), 'utf-8');
-const JWT_EXPIRES = parseInt(process.env.JWT_EXPIRES!) || 300;
+const JWT_EXPIRES = parseInt(process.env.JWT_EXPIRES!) || 1800;
 const algorithm = "RS256";
 
 function hashPassword(password: string) {
