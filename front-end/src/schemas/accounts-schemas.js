@@ -18,7 +18,8 @@ const accountCreationSchema = Joi.object({
   domain: Joi.string()
     .min(7)
     .max(255)
-    .required()
+    .allow('')
+    .optional()
 });
 
 const accountUpdateSchema = Joi.object({
@@ -35,6 +36,8 @@ const accountUpdateSchema = Joi.object({
   domain: Joi.string()
     .min(7)
     .max(255)
+    .allow('')
+    .optional()
 });
 
 const accountLoginSchema = Joi.object({

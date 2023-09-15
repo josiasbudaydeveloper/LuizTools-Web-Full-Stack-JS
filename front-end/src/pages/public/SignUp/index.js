@@ -14,12 +14,11 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [domain, setDomain] = useState('');
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUp = async (event) => {
     event.preventDefault();
-    
-    const { error } = accountCreationSchema.validate({name, email, password, domain});
+
+    const { error } = accountCreationSchema.validate({name, email, password, domain });
 
     if (error) {
       const { details } = error;
@@ -74,6 +73,7 @@ export default function SignUp() {
                     type="text" 
                     placeholder="Type your name" 
                     onChange={event => {setName(event.target.value)}}
+                    required
                   />
                 </Form.Group>
                 <Form.Group controlId="email-group">
@@ -84,6 +84,7 @@ export default function SignUp() {
                     type="email" 
                     placeholder="Type your email" 
                     onChange={event => {setEmail(event.target.value)}}
+                    required
                   />
                 </Form.Group>
                 <Form.Group controlId="password-group">
@@ -94,6 +95,7 @@ export default function SignUp() {
                     type="password" 
                     placeholder="Type your Password" 
                     onChange={event => {setPassword(event.target.value)}}
+                    required
                   />
                 </Form.Group>
                 <Form.Group controlId="domain-group">
@@ -101,7 +103,7 @@ export default function SignUp() {
                     Domain:
                   </Form.Label>
                   <Form.Control 
-                    type="url" 
+                    type="text" 
                     placeholder="Type your Domain" 
                     onChange={event => {setDomain(event.target.value)}}
                   />
