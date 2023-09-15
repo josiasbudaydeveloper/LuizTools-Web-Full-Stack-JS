@@ -8,12 +8,18 @@ function checkTokenValidation(req: Request, res: Response, next: NextFunction) :
 }
 
 async function getAccounts(req: Request, res: Response, next: NextFunction) {
-  const accounts = await accountsRepository.findAll();
+  try {
+    const accounts = await accountsRepository.findAll();
 
-  return res.json(accounts.map((item) => {
-    item.password = "";
-    return item;
-  }));
+    return res.json(accounts.map((item) => {
+      item.password = "";
+      return item;
+    }));
+  }
+  catch (error) {
+    console.log(error);
+    return res.sendStatus(400);
+  }
 }
 
 async function getAccount(req: Request, res: Response, next: NextFunction) {
