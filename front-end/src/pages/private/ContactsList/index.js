@@ -6,30 +6,33 @@ import {
   Table,
   Row,
   Col,
-  Navigate
+  Spinner
 } from "react-bootstrap";
 import { Link, useLocation } from 'react-router-dom';
 import contactsService from "../../../services/contacts";
 
 export default function ContactsList() {
   const [contacts, setContacts] = useState([]);
-  const [isLoading, setIsLoading] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const Location = useLocation();
 
   async function ComponentDidMount() {
     const service = new contactsService();
     try {
+      setIsLoading(true);
       const result = await service.getAll();
 
       setContacts(result);
+      setIsLoading(false);
     }
     catch(error) {
       console.log(error);
     }
   }
 
-  function RenderLine(contact) {
+  function RenderLine(item) {
+    const contact = item.contact;
     return (
       <tr key={contact.id}>
         <td>{contact.name}</td>
@@ -57,13 +60,11 @@ export default function ContactsList() {
   }
 
   useEffect(() => {
-    const interval = setInterval(async () => {
+    const timeOut = setTimeout( async () => {
       await ComponentDidMount();
-    }, 1000);
+    });
 
-    return () => {
-      clearInterval(interval); // Clean up the interval on unmount
-    };
+    return () => clearTimeout(timeOut);
   }, []);
 
   return (
@@ -78,10 +79,15 @@ export default function ContactsList() {
             </Col>
             <Col>
               <Link className="btn btn-success float-end" to="/contacts/add">Add contact</Link>
+              <button className="btn btn-primary float-end me-2" onClick={ComponentDidMount}>Update</button>
             </Col>
           </Row>
           
-          <RenderTable contacts={contacts} />
+          {!isLoading ? <RenderTable contacts={contacts} /> : 
+            <div className="d-flex justify-content-center align-items-center" style={{height:"200px"}}>
+              <Spinner variant="primary" />
+            </div>
+          }
         </Container>
       </PageContent>
     </>
