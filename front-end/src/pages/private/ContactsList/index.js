@@ -31,8 +31,7 @@ export default function ContactsList() {
     }
   }
 
-  function RenderLine(item) {
-    const contact = item.contact;
+  function RenderLine({ contact }) {
     return (
       <tr key={contact.id}>
         <td>{contact.name}</td>
@@ -53,7 +52,7 @@ export default function ContactsList() {
           </tr>
         </thead>
         <tbody>
-          {contacts.map((item) => <RenderLine contact={item} /> )}
+          {contacts.map((item) => <RenderLine key={item.id} contact={item} /> )}
         </tbody>
       </Table>
     )
