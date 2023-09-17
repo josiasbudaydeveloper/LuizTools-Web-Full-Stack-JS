@@ -31,7 +31,7 @@ export default Contact.init({
     allowNull: false
   },
   phone: {
-    type: DataTypes.STRING(15),
+    type: DataTypes.STRING(21),
     allowNull: true
   },
   status: {

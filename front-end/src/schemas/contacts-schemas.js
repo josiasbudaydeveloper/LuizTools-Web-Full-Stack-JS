@@ -6,7 +6,6 @@ const contactCreationSchema = Joi.object({
     .max(255)
     .required(),
   email: Joi.string()
-    .email()
     .required(),
   phone: Joi.string()
     .length(21)
