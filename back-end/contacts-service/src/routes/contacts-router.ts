@@ -29,4 +29,10 @@ router.patch('/:id',
   contactsControllers.updateContact
 );
 
+router.delete('/:id',
+  commonsMiddlewares.validateAuthentication, 
+  commonsMiddlewares.validateIdFormat, 
+  contactsControllers.deleteContact
+);
+
 export default router;

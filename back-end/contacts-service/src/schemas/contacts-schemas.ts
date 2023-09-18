@@ -23,8 +23,9 @@ const contactUpdateSchema = Joi.object({
     .min(3)
     .max(255),
   phone: Joi.string()
-    .min(21)
-    .max(21),
+    .length(21)
+    .allow(null, '')
+    .optional(),
   status: Joi.number()
     .integer()
     .min(100)

@@ -1,7 +1,7 @@
 import baseAPI from './base-api';
 import baseURL from '../configs/base-urls';
 
-export default class contactsService {
+export default class ContactsService {
   constructor() {
     this.api = baseAPI(baseURL.API_CONTACTS);
   }
