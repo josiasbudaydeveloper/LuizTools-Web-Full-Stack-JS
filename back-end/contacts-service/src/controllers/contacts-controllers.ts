@@ -62,9 +62,25 @@ async function updateContact(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function deleteContact(req: Request, res: Response, next: NextFunction) {
+  try {
+    const contactId = parseInt(req.params.id);
+    const token = commonsController.getToken(res) as Token;
+    const contact = await contactsRepository.deleteById(contactId, token.accountId);
+    if (!contact) return res.sendStatus(404);
+
+    return res.sendStatus(204);
+  }
+  catch(error) {
+    console.log(error);
+    return res.sendStatus(400); 
+  }
+}
+
 export default {
   getContacts,
   getContact,
   addContact,
-  updateContact
+  updateContact,
+  deleteContact
 }

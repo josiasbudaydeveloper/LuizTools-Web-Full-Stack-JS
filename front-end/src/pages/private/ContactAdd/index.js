@@ -80,7 +80,6 @@ export default function contactAdd() {
                     <Form.Control 
                       type="text" 
                       placeholder="Type the contact name" 
-                      tip="ok"
                       onChange={event => {setName(event.target.value)}}
                       style={{width: "350px"}}
                       required
