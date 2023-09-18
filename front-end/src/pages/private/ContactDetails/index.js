@@ -23,9 +23,6 @@ export default function ContactDetails() {
   const fixedName = useRef();
   const fixedEmail = useRef();
   const fixedPhone = useRef();
-  const test = useRef('0');
-
-  let email = '';
 
   const { contactId } = useParams();
 
