@@ -90,7 +90,7 @@ export default function ContactDetails() {
             <Col>
               <h2>View Contact</h2>
               <p>View or edit this contact</p>
-              <Table striped bordered hover>
+              <Table striped bordered hover responsive>
                 <thead>
                   <tr>
                     <th>Name</th>

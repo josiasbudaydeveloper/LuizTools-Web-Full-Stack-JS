@@ -75,7 +75,7 @@ export default function ContactsList() {
 
   function RenderTable({ contacts }) {
     return (
-      <Table striped bordered hover>
+      <Table striped bordered hover responsive>
         <thead>
           <tr>
             <th>Name</th>
@@ -102,8 +102,8 @@ export default function ContactsList() {
               <p>List of registered contacts</p>
             </Col>
             <Col>
-              <Link className="btn btn-success float-end" to="/contacts/add">Add contact</Link>
-              <button className="btn btn-primary float-end me-2" onClick={ComponentDidMount}>Update</button>
+              <Link className="btn btn-success float-end mt-2" to="/contacts/add">Add contact</Link>
+              <button className="btn btn-primary float-end me-2 mt-2" onClick={ComponentDidMount}>Update</button>
             </Col>
           </Row>
           
